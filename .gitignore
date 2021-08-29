@@ -7,3 +7,8 @@ target
 out
 .DS_Store
 .bsp
+
+# VS Code Metals
+.bloop/
+.metals/
+.vscode/
