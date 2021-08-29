@@ -49,7 +49,7 @@ object TypesExercises {
     **/
   def showPerson1(person: Person): String =
     person match {
-      case Person(name, age) => s"${???} is ${???} years old"
+      case Person(name, age) => s"${name} is ${age} years old"
     }
 
   /**
@@ -58,7 +58,7 @@ object TypesExercises {
     * Hint: Navigate the Person class' fields using the "." operator
     */
   def showPerson2(person: Person): String =
-    s"${???} is ${???} years old"
+    s"${person.name} is ${person.age} years old"
 
   /**
     * Write a function that changes the age of a person.
@@ -72,7 +72,7 @@ object TypesExercises {
     *
     * Hint: Use the .copy method
     */
-  def changeAge(newAge: Int, person: Person): Person = ???
+  def changeAge(newAge: Int, person: Person): Person = person.copy(name = person.name, age = newAge)
 
   /**
     * Let's look at another data type.
@@ -95,7 +95,7 @@ object TypesExercises {
     *
     * You can solve this like how you solved `showPerson1` or `showPerson2`.
     */
-  def showWallet(wallet: Wallet): String = ???
+  def showWallet(wallet: Wallet): String = s"The wallet amount is ${wallet.amount.toString()}"
 
   /**
     * Here is another example of working with immutable values.
@@ -106,7 +106,7 @@ object TypesExercises {
     *
     * Hint: You need to calculate the new amount first.
     **/
-  def purchase(cost: Double, wallet: Wallet): Wallet = ???
+  def purchase(cost: Double, wallet: Wallet): Wallet = wallet.copy(amount = wallet.amount - cost)
 
   /**
     * *********************************************
@@ -140,7 +140,13 @@ object TypesExercises {
   /**
     * Implement the following showTrafficLightStr function to pass all your tests!
     */
-  def showTrafficLightStr(trafficLight: String): String = ???
+  def showTrafficLightStr(trafficLight: String): String = trafficLight match {
+    case "red" => "The traffic light is red"
+    case "yellow" => "The traffic light is yellow"
+    case "green" => "The traffic light is green"
+    case "flashing" => "The traffic light is flashing"
+    case _ => "should return a default on other inputs"
+  }
 
 
   /**
@@ -202,7 +208,12 @@ object TypesExercises {
     * Hint: Use pattern matching
     **/
 
-  def showTrafficLight(trafficLight: TrafficLight): String = ???
+  def showTrafficLight(trafficLight: TrafficLight): String = trafficLight match {
+    case Red => "The traffic light is red"
+    case Yellow => "The traffic light is yellow"
+    case Green => "The traffic light is green"
+    case Flashing => "The traffic light is flashing"
+  }
 
   /**
     * *********************************************************
@@ -222,4 +233,31 @@ object TypesExercises {
     * 4. Fill in the unit test for this new scenario: "showTrafficLight should show Flashing"
     *
     */
+
+    case object Flashing extends TrafficLight
+
+
+  /**
+    * Now let's try to do pattern matching on a product type, Customer
+    * 
+    * Each Customer has a Contact, which is a sum type of either Phone or Email
+    * 
+    * Hint: you can pattern match on the type by deconstructing a value with `@`
+    * 
+    * scala> showContact(Customer("John", Phone("0411222333")))
+    * > "John's contact is 0411222333"
+    * 
+    * scala> showContact(Customer("Mary", Email("mary@email.com")))
+    * > "Mary's contact is mary@email.com"
+    */
+
+    sealed trait PreferredContactMethod
+    case class Phone(number: String) extends PreferredContactMethod
+    case class Email(address: String) extends PreferredContactMethod
+    case class Customer(name: String, contact: PreferredContactMethod)
+
+    def showContact(customer: Customer): String = customer match {
+      case customer@Customer(_, Phone(number)) => s"${customer.name}'s contact is ${number}"
+      case customer@Customer(_, Email(address)) => s"${customer.name}'s contact is ${address}"
+    }
 }
